@@ -25,10 +25,10 @@ router.post("/login", loginController);
 router.post("/forgot-password", forgotPasswordController);
 
 //All Users || GET
-router.get("/all-users", requireSignIn, isSuperAdmin, getAllUsersController);
+router.get("/all-users", requireSignIn , getAllUsersController);
 
 //All Users Only || GET
-router.get("/all-users-only", requireSignIn, isAdminSuperAdmin, getUsersController);
+router.get("/all-users-only", requireSignIn, getUsersController);
 
 
 //Delete Admin || DELETE
@@ -37,6 +37,20 @@ router.delete("/delete-admin/:id", requireSignIn, isSuperAdmin, deleteAdminContr
 
 //Delete User || DELETE
 router.delete("/delete-user/:id", requireSignIn, isAdminSuperAdmin, deleteUserController);
+
+
+router.get("/superAdmin-auth", requireSignIn,isSuperAdmin, (req, res) => {
+  res.status(200).send({ ok: true });
+});
+
+//protected Admin route auth
+router.get("/admin-auth", requireSignIn, isAdminSuperAdmin, (req, res) => {
+  res.status(200).send({ ok: true });
+});
+
+router.get("/admin-SuperAdmin-auth", requireSignIn,isAdminSuperAdmin, (req, res) => {
+  res.status(200).send({ ok: true });
+});
 
 
 export default router;

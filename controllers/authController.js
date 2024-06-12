@@ -163,13 +163,13 @@ export const forgotPasswordController = async (req, res) => {
 export const getAllUsersController = async (req, res) => {
   try {
     // Fetch all users from the database
-    const users = await userModel.find({});
+    const admins = await userModel.find({});
 
     // Send the users as a response
     res.status(200).json({
       success: true,
       message: 'Admins retrieved successfully',
-      users: users
+      admins: admins
     });
   } catch (error) {
     // Handle errors
@@ -247,6 +247,10 @@ export const deleteAdminController = async (req, res) => {
     const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    if(user.role === 2){
+      return res.status(404).json({ success: false, message: 'Cant delete!' });
     }
 
     // Delete the user

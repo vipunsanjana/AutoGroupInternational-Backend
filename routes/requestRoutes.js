@@ -16,7 +16,7 @@ const router = express.Router();
 router.post(
     "/create-request",
     requireSignIn,
-    isAdmin,
+    isAdminSuperAdmin,
     createRequestController
   );
 
@@ -24,8 +24,8 @@ router.post(
 router.get(
     "/all-request",
     requireSignIn,
-    isAdmin,
-    getAllRequest
+    getAllRequest,
+    
   );
 
 
@@ -33,14 +33,14 @@ router.get(
 //get request by id || GET
 router.get(
     "/get-request-id/:id",
-  
+  requireSignIn,
     getRequestById
   );
 
 
-  router.put(
+  router.patch(
     "/accept-request/:id",
-
+requireSignIn,
     updateRequestStatus
   );
 

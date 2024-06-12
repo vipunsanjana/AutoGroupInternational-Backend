@@ -1,4 +1,4 @@
-import JWT from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
 
 //Protected Routes token base
@@ -47,6 +47,7 @@ export const isSuperAdmin = async (req, res, next) => {
     try {
       
       const user = await userModel.findById(req.user._id);
+      console.log(user.role);
       if (user.role !== 2) {
         return res.status(401).send({
           success: false,

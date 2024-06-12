@@ -13,7 +13,7 @@ const requestSchema = new mongoose.Schema(
     currentDrawingNumber: { type: String },
     updatedPartNumber: { type: String },
     updatedDrawingNumber: { type: String },
-    status: { type: String, default: 'NewEntry' },
+    status: { type: String },
     
 },{ timestamps: true });
 

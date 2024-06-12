@@ -8,6 +8,8 @@ import requestModel from "../models/requestModel.js";
 
 
 export const createRequestController = async (req, res) => {
+
+    
     try {
         // Extract request data from req.body
         const {
@@ -21,17 +23,17 @@ export const createRequestController = async (req, res) => {
             currentPartNumber,
             currentDrawingNumber,
             updatedPartNumber,
-            updatedDrawingNumber
+            updatedDrawingNumber,
+            
         } = req.body;
 
         // Check if all required fields are provided
         if (!requestedBy || !vehicleModel || !vehicleGeneration || !system || !type || !description || !parentPartNumber || !currentPartNumber || !currentDrawingNumber || !updatedPartNumber || !updatedDrawingNumber) {
             return res.status(400).send({ message: "All required fields must be provided" });
         }
-
-        // Set the initial status to "pending"
         const status = "pending";
-
+        // Set the initial status to "pending"
+       
         // Create a new request object
         const newRequest = new requestModel({
             requestedBy,
@@ -125,16 +127,20 @@ export const getRequestById = async (req, res) => {
 
 export const updateRequestStatus = async (req, res) => {
     try {
-
-
         // Extract the request ID from the request parameters
-        const id  = req.params.id;
-
+        const { id } = req.params;
+console.log(id);
         // Extract the new status from the request body
-        const { newStatus } = req.body;
+        const newStatus  = req.body.status;
+        console.log('New Status:', newStatus);
 
-        // Fetch the request from the database by ID
-        const request = await requestModel.findByIdAndUpdate(id,{status: newStatus});
+        // Update the status of the request and fetch the updated document
+        const request = await requestModel.findByIdAndUpdate(
+            id,
+            { status: newStatus },
+            { new: true }
+        );
+        console.log('Request:', request);
 
         // Check if the request exists
         if (!request) {
@@ -143,12 +149,6 @@ export const updateRequestStatus = async (req, res) => {
                 message: 'Request not found'
             });
         }
-
-        // Update the status of the request
-        request.status = newStatus;
-
-        // Save the updated request to the database
-        await request.save();
 
         // Send a success response
         res.status(200).json({
